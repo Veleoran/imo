@@ -10,6 +10,8 @@ app.set('views', './templates'); // Assurez-vous que ce chemin pointe vers votre
 
 // Middleware pour servir des fichiers statiques
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/bootstrap', express.static('node_modules/bootstrap/dist/'));
+
 
 app.use(sassMiddleware({
     src: path.join(__dirname, 'build'),

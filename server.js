@@ -1,31 +1,34 @@
 const express = require('express');
 const app = express();
 const path = require("path");
-const sassMiddleware = require('node-sass-middleware');// Correction de l'importation
+const sassMiddleware = require('node-sass-middleware');
+const routes = require('./app/routes.js'); // Assurez-vous que le chemin est correct
 
 require('dotenv').config();
 
+// Configurations
 app.set('view engine', 'pug');
-app.set('views', './templates'); // Assurez-vous que ce chemin pointe vers votre dossier contenant les fichiers Pug
+app.set('views', './templates'); // Chemin vers les fichiers Pug
 
-// Middleware pour servir des fichiers statiques
+// Middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bootstrap', express.static('node_modules/bootstrap/dist/'));
-
-
 app.use(sassMiddleware({
     src: path.join(__dirname, 'build'),
     dest: path.join(__dirname, 'public'),
     debug: true,
     outputStyle: 'compressed',
     indentedSyntax: false,
-    prefix: '/css'  // Assurez-vous que ce chemin correspond à votre configuration
+    prefix: '/css'
 }));
 
-const router = require('./app/routes.js');
-router(app)
-// Démarrer le serveur
+// Routes
+app.use('/', routes);
+
+// Démarrage du serveur
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });

@@ -26,6 +26,11 @@ app.use(sassMiddleware({
 
 // Routes
 app.use('/', routes);
+// Placez ceci à la fin de toutes vos routes dans server.js
+app.use((error, req, res, next) => {
+    console.error(error);
+    res.status(500).send("Une erreur est survenue !");
+});
 
 // Démarrage du serveur
 const PORT = process.env.PORT || 3000;

@@ -1,6 +1,6 @@
-// Importation de la connexion à la base de données, si nécessaire
+const bcrypt = require('bcryptjs');
 const con = require('./database_sql'); // Assurez-vous que le chemin est correct
-
+const UsersRepository = require('../public/src/repository/UsersRepository');
 class UserController {
     constructor() {
        
@@ -15,29 +15,36 @@ class UserController {
         }
     }
 
-    async checkEmailExists(email) {
-        return new Promise((resolve, reject) => {
-            pool.query('SELECT COUNT(*) AS count FROM users WHERE email = ?', [email], (error, results) => {
-                if (error) {
-                    return reject(error);
-                }
-                resolve(results[0].count > 0);
-            });
-        });
-    }
-
+ 
+  
     async registerUser(req, res, next) {
+        console.log(req.body);  // Inspectez le contenu de req.body
         try {
-            const emailExists = await this.checkEmailExists(req.body.email);
+            const { email, password, genre, lastname, firstname, phone } = req.body;
+            if(!email) {
+                return res.status(400).send('L\'email est requis.');
+            }
+    
+            const emailExists = await UsersRepository.checkEmailExists(email); // Utilisez UsersRepository
             if (emailExists) {
                 return res.status(409).send('Cet email est déjà enregistré.');
             }
-            // Logique pour enregistrer l'utilisateur...
+            
+            // Créez un nouvel objet Utilisateur ici (ou juste utilisez les variables)
+            const salt = bcrypt.genSaltSync(10);
+            const hashedPassword = bcrypt.hashSync(password, salt);
+            
+            const newUser = {
+                email, password: hashedPassword, genre, lastname, firstname, phone
+            };
+            const userId = await UsersRepository.createUser(newUser);
+            
+            res.redirect(`/successPage?userId=${userId}`); // Remplacez par le chemin approprié
         } catch (error) {
-            next(error);
+            next(error); // Utilisez le middleware d'erreur pour gérer l'erreur
         }
     }
-    // Ajoutez d'autres méthodes ici si nécessaire
+    // ...autres méthodes...
 }
 
 module.exports = new UserController(); // Ajoutez `service` si nécessaire, ou enlevez-le si vous ne l'utilisez pas

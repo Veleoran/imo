@@ -1,0 +1,8 @@
+extends ../layout.pug
+
+block content
+    .container
+        if session.user 
+            p Bonjour #{session.user.lastname} #{session.user.firstname}
+        else 
+            p Vous n'êtes pas connecté

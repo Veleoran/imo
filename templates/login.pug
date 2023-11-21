@@ -1,0 +1,13 @@
+extends layout.pug
+
+block content
+  .container.mt-3
+    h1 Se connecter
+    form(action='/login' method='post')
+      .mb-3
+        label(for='email') Email
+        input#email.form-control(type='email' name='email' required)
+      .mb-3
+        label(for='password') Mot de passe
+        input#password.form-control(type='password' name='password' required)
+      button.btn.btn-primary(type='submit') Se connecter

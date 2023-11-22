@@ -1,21 +1,59 @@
 extends ../layout.pug
+block breadcrumb  
+  li
+    a(href='#')
+      em.fa.fa-user &nbsp;
+  li(class='active') Collaborateurs
+
+extends ../layout.pug
+block breadcrumb  
+  li
+    a(href='#')
+      em.fa.fa-user &nbsp;
+  li(class='active') Collaborateurs
 
 block content
-    h1 Liste des utilisateurs
-    button(type="button" onclick="location.href='/admin/users/create'") Ajouter un utilisateur
-    table
-        thead
-            tr
-                th Nom
-                th Email
-                th Téléphone
-                th Actions
-        tbody
-            each user in users
-                tr
-                    td #{user.nom}
-                    td #{user.email}
-                    td #{user.telephone}
-                    td
-                        a(href=`/admin/users/edit/${user.id}`) Modifier
-                        a(href=`/admin/users/delete/${user.id}`) Supprimer
+  a.btn.btn-success(href="/admin/users/create") Créer Nouvel Utilisateur
+  if users && users.length > 0
+    table.table
+      thead 
+        tr 
+          th #
+          th Nom 
+          th email 
+          th Téléphone 
+          th(width="1%") 
+      tbody
+        each user in users
+          tr
+            td #{user.id}
+            if user.civility == 2
+              td Madame #{user.firstname} #{user.lastname}
+            else
+              td Monsieur #{user.firstname} #{user.lastname}
+            td #{user.email}
+            td #{user.phone}
+            td.text-nowrap 
+              a.btn.btn-primary(href=""/admin/users/edit/"+user.id")
+                i.fa.fa-edit
+              span &nbsp;&nbsp;
+a.btn.btn-danger(href="/admin/users/delete/"+user.id)
+  i.fa.fa-trash
+  else 
+    .alert.alert-info Aucun utilisateurrs
+      tr
+        td #{user.id}
+        if user.civility == 2
+          td Madame #{user.firstname} #{user.lastname}
+        else
+          td Monsieur #{user.firstname} #{user.lastname}
+        td #{user.email}
+        td #{user.phone}
+        td.text-nowrap 
+          a.btn.btn-primary(href="/admin/users/edit/"+user.id)
+            i.fa.fa-edit
+          span &nbsp;&nbsp;
+a.btn.btn-danger(href="/admin/users/delete/"+user.id)
+  i.fa.fa-trash
+  else 
+    .alert.alert-info Aucun utilisateur

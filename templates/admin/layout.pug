@@ -17,17 +17,23 @@ html
       </button>
       div(class="d-none d-md-block d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start")
         ul.navbar-nav.px-3
-          li.nav-item.dropdown
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="https://github.com/Veleoran.png" alt="mdo" width="32" height="32" class="rounded-circle me-2">
-              <strong>#{session.user.firstname} #{session.user.lastname}</strong>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" style="position:absolute;" aria-labelledby="dropdownUser1">
-              <li><a class="dropdown-item" href="#">Configuration</a></li>
-              <li><a class="dropdown-item" href="#">Profile</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/deconnexion">Se déconnecter</a></li>
-            </ul>
+  li.nav-item.dropdown
+    a(href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false")
+      img(src="https://github.com/Veleoran.png" alt="mdo" width="32" height="32" class="rounded-circle me-2")
+      if session && session.user
+        strong #{session.user.firstname} #{session.user.lastname}
+      else
+        strong Invité
+    ul.dropdown-menu.dropdown-menu-dark.text-small.shadow(style="position:absolute;" aria-labelledby="dropdownUser1")
+      li
+        a.dropdown-item(href="#") Configuration
+      li
+        a.dropdown-item(href="#") Profile
+      li
+        hr.dropdown-divider
+      li
+        a.dropdown-item(href="/deconnexion") Se déconnecter</a></li>
+    </ul>
 //- ... tout le reste du code ...
 
 .container-fluid

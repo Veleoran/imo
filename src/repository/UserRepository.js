@@ -42,5 +42,15 @@ module.exports = class UserRepository {
         } finally {
             connection.release(); // Libérer la connexion dans le `finally`
         }
+        
+    }
+    async delete(id) {
+        const connection = await getConnection();
+        try {
+            await connection.query('DELETE FROM `users` WHERE id = ?', [id]);
+            // Pas besoin de 'return' puisque l'important est l'action et non le résultat
+        } finally {
+            connection.release();
+        }
     }
 };

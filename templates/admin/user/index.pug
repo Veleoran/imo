@@ -1,0 +1,21 @@
+extends ../layout.pug
+
+block content
+    h1 Liste des utilisateurs
+    button(type="button" onclick="location.href='/admin/users/create'") Ajouter un utilisateur
+    table
+        thead
+            tr
+                th Nom
+                th Email
+                th Téléphone
+                th Actions
+        tbody
+            each user in users
+                tr
+                    td #{user.nom}
+                    td #{user.email}
+                    td #{user.telephone}
+                    td
+                        a(href=`/admin/users/edit/${user.id}`) Modifier
+                        a(href=`/admin/users/delete/${user.id}`) Supprimer

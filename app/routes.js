@@ -5,12 +5,17 @@ const router = express.Router();
 const HomeController = require('../src/controllers/HomeController');
 const RegisterController = require('../src/controllers/RegisterController');
 const AuthenticationController = require('../src/controllers/AuthenticationController');
+const DashboardController = require('../src/controllers/DashboardController');
+const UserController = require('../src/controllers/UserController');
 
 // Instanciation des contrôleurs
-const homeController = new HomeController(); // Rendu singleton (une seule instance)
-const registerController = new RegisterController(); // Rendu singleton
-const authenticationController = new AuthenticationController(); // Rendu singleton
+const homeController = new HomeController();
+const registerController = new RegisterController();
+const authenticationController = new AuthenticationController();
+const dashboardController = new DashboardController();
+const userController = new UserController();
 
+console.log('Les contrôleurs ont été chargés');
 // Routes pour HomeController
 router.get('/', homeController.index.bind(homeController));
 
@@ -21,5 +26,19 @@ router.post('/inscription', registerController.process.bind(registerController))
 // Routes pour AuthenticationController
 router.get('/connexion', authenticationController.index.bind(authenticationController));
 router.post('/connexion', authenticationController.process.bind(authenticationController));
+
+// Route pour la déconnexion
+router.get('/deconnexion', authenticationController.deconnect.bind(authenticationController));
+
+// Routes pour la partie admin
+router.get('/admin', dashboardController.index.bind(dashboardController));
+
+// Routes pour le UserController
+router.get('/admin/users', userController.index.bind(userController));
+
+router.post('/admin/users/create', userController.create.bind(userController));
+router.get('/admin/users/edit/:userId', userController.getEditForm.bind(userController));
+router.post('/admin/users/update/:userId', userController.update.bind(userController));
+router.post('/admin/users/delete/:userId', userController.delete.bind(userController));
 
 module.exports = router;

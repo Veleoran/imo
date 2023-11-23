@@ -5,16 +5,18 @@ class UserController {
         console.log('Affichage de la liste des utilisateurs...');
         const repo = new UserRepository();
         repo.getUsers().then((users) => {
-            response.render('admin/user/index', { users });
+            response.render('admin/user/index', { users, route: request.path });
         }).catch((error) => {
             console.error(error);
             response.status(500).send('Erreur lors de la récupération des utilisateurs.');
         });
     }
+    getCreateForm(request, response) {
+        // Assurez-vous d'avoir un fichier Pug pour cette vue dans 'templates/admin/users/create.pug'
+        response.render('admin/user/create', { route: request.path });
+    }
 
     create(request, response) {
-        // TODO: Implémentez la logique pour créer un nouvel utilisateur
-        // Exemple : récupérer les infos du formulaire et créer l'utilisateur dans la base de données
         const userData = request.body;
         const repo = new UserRepository();
         repo.add(userData).then(() => {
@@ -33,7 +35,7 @@ class UserController {
         const repo = new UserRepository();
         repo.getUserById(userId).then((user) => {
             if (user) {
-                response.render('admin/user/edit', { user });
+                response.render('admin/user/edit', { user, route: request.path });
             } else {
                 request.flash('error', "L'utilisateur n'existe pas.");
                 response.redirect('/admin/users');
@@ -62,7 +64,7 @@ class UserController {
         const repo = new UserRepository();
         repo.deleteUser(request.params.id).then(() => { // Assurez-vous que request.params.id corresponde à la définition de votre route
             request.flash('notify', "L'utilisateur a bien été supprimé.");
-            response.redirect('/admin/user'); // Assurez-vous ici que le chemin est correct par rapport à votre structure de route et de fichier Pug
+            response.redirect('/admin/users'); // Assurez-vous ici que le chemin est correct par rapport à votre structure de route et de fichier Pug
         });
     }
 }

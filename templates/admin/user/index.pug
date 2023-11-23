@@ -1,11 +1,5 @@
 extends ../layout.pug
-block breadcrumb  
-  li
-    a(href='#')
-      em.fa.fa-user &nbsp;
-  li(class='active') Collaborateurs
 
-extends ../layout.pug
 block breadcrumb  
   li
     a(href='#')
@@ -34,26 +28,10 @@ block content
             td #{user.email}
             td #{user.phone}
             td.text-nowrap 
-              a.btn.btn-primary(href=""/admin/users/edit/"+user.id")
+              a.btn.btn-primary(href="/admin/users/edit/"+user.id)
                 i.fa.fa-edit
               span &nbsp;&nbsp;
-a.btn.btn-danger(href="/admin/users/delete/"+user.id)
-  i.fa.fa-trash
-  else 
-    .alert.alert-info Aucun utilisateurrs
-      tr
-        td #{user.id}
-        if user.civility == 2
-          td Madame #{user.firstname} #{user.lastname}
-        else
-          td Monsieur #{user.firstname} #{user.lastname}
-        td #{user.email}
-        td #{user.phone}
-        td.text-nowrap 
-          a.btn.btn-primary(href="/admin/users/edit/"+user.id)
-            i.fa.fa-edit
-          span &nbsp;&nbsp;
-a.btn.btn-danger(href="/admin/users/delete/"+user.id)
-  i.fa.fa-trash
+              a.btn.btn-danger(href="/admin/users/delete/"+user.id)
+                i.fa.fa-trash
   else 
     .alert.alert-info Aucun utilisateur
